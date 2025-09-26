@@ -1,0 +1,1266 @@
+/* css/index.css */
+
+:root {
+    --yelp-red: #d32323;
+    --yelp-dark: #333;
+    --yelp-light: #f5f5f5;
+    --warning-orange: #ff9800;
+    --warning-light: #fffaf6;
+    --warning-border: #ffe8d6;
+    --success-green: #2e7d32;
+    --success-light: #e8f5e9;
+    --error-red: #d32f2f;
+    --error-light: #ffebee;
+    --star-gold: #ffc107;
+    --border-light: #eee;
+    --border-medium: #ccc;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    background-color: var(--yelp-light);
+    color: var(--yelp-dark);
+    line-height: 1.6;
+}
+
+/* ======================
+   HEADER & NAVBAR
+   ====================== */
+
+header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    /* REMOVED: position: sticky; */
+    /* REMOVED: top: 0; */
+    /* REMOVED: z-index: 100; */
+    animation: slideDown 0.5s ease-out;
+    /* Header will now scroll normally */
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: nowrap;
+    position: relative;/* Still needed for desktop absolute positioning */
+    min-height: 60px;
+}
+
+.logo {
+    color: var(--yelp-red);
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.logo1 {
+    color: var(--yelp-red);
+    font-weight: 700;
+    font-size: 1.75rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: var(--yelp-dark);
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-grow: 1;
+    justify-content: flex-end;
+    margin-right: 180px; /* Space for desktop auth buttons */
+}
+
+.navbar nav a {
+    color: var(--yelp-dark);
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.navbar nav a:hover {
+    background-color: var(--yelp-light);
+    color: var(--yelp-red);
+}
+
+.navbar nav a.active {
+    font-weight: bold;
+    color: var(--yelp-red);
+}
+
+/* Auth Container (Desktop) */
+#auth-container {
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 2px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    background: var(--yelp-red);
+    color: white;
+    position:inherit;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Consistent gap for desktop */
+    z-index: 101; /* Keep high z-index for absolute positioning */
+}
+#auth-container button { margin-left: 50px; margin-bottom: 5px; }
+#auth-container button {
+    background: var(--yelp-red);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.25);color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+    margin-left: 15px; 
+    margin-bottom: 5px;
+}
+#my-profile-link {
+    background: var(--yelp-red);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.25);color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+    text-decoration:none;
+}
+
+#auth-container button:hover {
+    background: #121111;
+}
+#my-profile-link:hover {
+    background: #121111;
+}
+
+#user-logged-in {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+}
+
+#user-logged-in span#user-email {
+    font-weight: bold;
+    color: var(--yelp-dark);
+    white-space: nowrap;
+    color: #121111;
+}
+
+/* ======================
+   HERO SECTION
+   ====================== */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('../assets/placeholder-profile.jpg'); /* Verify path */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    animation: fadeIn 1s ease-in;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================
+   BUSINESS LISTINGS & SECTIONS
+   ====================== */
+.business-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 30px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.business-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.business-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.business-img {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--yelp-light);
+}
+
+.business-info {
+    padding: 15px;
+}
+
+.business-name {
+    color: var(--yelp-red);
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.business-rating {
+    color: var(--star-gold);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.featured-section,
+.needs-improvement {
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.needs-improvement {
+    background-color: var(--warning-light);
+    border: 1px solid var(--warning-border);
+}
+
+.section-title {
+    color: var(--yelp-dark);
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.needs-improvement .section-title {
+    color: var(--warning-orange);
+    border-bottom-color: var(--warning-border);
+}
+
+.reported-badge, /* Unused */
+.needs-improvement-badge {
+    background: var(--warning-orange);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ======================
+   REVIEW FORM STYLING
+   ====================== */
+
+#add-review {
+    padding: 40px 5%;
+    background-color: #ffffff;
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.review-form {
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+}
+
+#add-review h2 {
+    text-align: center;
+    color: var(--yelp-dark);
+    margin-bottom: 30px;
+    font-size: 1.6rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--yelp-dark);
+    font-size: 0.95rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-medium);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--yelp-red);
+    box-shadow: 0 0 0 2px rgba(211, 35, 35, 0.2);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.review-form .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ======================
+   BUTTONS (General)
+   ====================== */
+.btn {
+     background: var(--yelp-red);
+     color: white;
+     border: none;
+     padding: 12px 25px;
+     border-radius: 4px;
+     cursor: pointer;
+     font-weight: bold;
+     font-size: 1rem;
+     transition: background 0.3s ease;
+     text-decoration: none;
+     display: inline-block;
+     text-align: center;
+}
+
+.btn:hover {
+    background: #b71c1c;
+}
+
+/* ======================
+   AUTHENTICATION MODAL STYLES
+   ====================== */
+
+.auth-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* High z-index for modals */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+}
+
+.auth-modal form {
+    background-color: white;
+    margin: 0 auto;
+    padding: 30px 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.auth-modal h3 {
+    color: var(--yelp-red);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+}
+
+.auth-modal input[type="text"],
+.auth-modal input[type="email"],
+.auth-modal input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-medium);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.auth-modal input:focus {
+    outline: none;
+    border-color: var(--yelp-red);
+    box-shadow: 0 0 0 2px rgba(211, 35, 35, 0.2);
+}
+
+.auth-modal button[type="submit"] {
+    background: var(--yelp-red);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+.auth-modal button[type="submit"]:hover {
+     background: #b71c1c;
+}
+.auth-modal button[type="submit"]:disabled {
+     background: #f8baba;
+     cursor: not-allowed;
+}
+
+.auth-modal button[type="button"] { /* Cancel buttons */
+    background: #e0e0e0;
+    color: var(--yelp-dark);
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+.auth-modal button[type="button"]:hover {
+    background: #bdbdbd;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: -5px;
+    font-size: 0.9rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remember-me input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+}
+.remember-me label {
+    margin: 0;
+    font-weight: normal;
+    cursor: pointer;
+    color: #555;
+}
+
+#forgot-password-link {
+    color: var(--yelp-red);
+    text-decoration: none;
+}
+#forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+.error-message,
+.status-message {
+    padding: 10px 15px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.error-message {
+    color: var(--error-red);
+    background-color: var(--error-light);
+    border-color: var(--error-red);
+}
+
+.status-message.success {
+    color: var(--success-green);
+    background-color: var(--success-light);
+    border-color: var(--success-green);
+}
+
+.status-message.submitting {
+     color: #555;
+     background-color: #f0f0f0;
+     border-color: var(--border-medium);
+}
+
+.error-message:empty,
+.status-message:empty {
+    display: none;
+}
+
+/* ======================
+   RESPONSIVE DESIGN
+   ====================== */
+
+@media (max-width: 768px) {
+    /* --- Header/Navbar on Mobile --- */
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 5%;
+        position: relative;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .navbar nav {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-right: 0;
+        gap: 5px;
+        order: 3; /* Nav below auth */
+    }
+
+     .navbar nav a {
+         padding: 8px 0;
+         width: 100%;
+         text-align: left;
+     }
+     .navbar nav a:hover {
+          background-color: var(--yelp-light);
+     }
+
+    /* Auth Container on Mobile */
+    #auth-container {
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        order: 2; /* Auth below logo */
+        flex-wrap: wrap;
+        gap: 10px; /* Ensure consistent gap on mobile */
+        /* If buttons are still too close, add margin */
+        /* e.g., for the buttons themselves: */
+        
+    }
+    #auth-container button {  
+        margin-left: 15px; 
+        margin-bottom: 5px; 
+    }
+
+    /* --- Other Mobile Adjustments --- */
+    .hero h1 { font-size: 1.8rem; }
+    .hero p { font-size: 1rem; }
+
+    .business-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .section-title { font-size: 1.4rem; }
+
+    .auth-modal form {
+        width: 95%;
+        padding: 20px;
+    }
+
+    #add-review {
+        padding: 30px 5%;
+    }
+
+    .review-form {
+        max-width: none;
+    }
+}
+
+.loading-message, .empty-section-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-style: italic;
+    width: 100%; / Make it span grid container /
+}
+.business-card .review-count {
+    margin-left: 5px;
+    font-size: 0.85em;
+    color: #777;
+}
+.business-img { position: relative; } / Needed for badge overlay /
+.business-img .needs-improvement-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+.business-location-summary {
+     font-size: 0.9em;
+     color: #555;
+     margin-top: 5px;
+}
+.business-category {
+     font-size: 0.85em;
+     color: #888;
+     margin-bottom: 5px;
+     text-transform: uppercase;
+     letter-spacing: 0.5px;
+}
+
+/* css/index.css */
+
+:root {
+    --yelp-red: #d32323;
+    --yelp-dark: #333;
+    --yelp-light: #f5f5f5;
+    --yelp-blue-link: #0073bb; /* Yelp's link blue */
+    --warning-orange: #ff9800;
+    --warning-light: #fffaf6;
+    --warning-border: #ffe8d6;
+    --success-green: #2e7d32;
+    --success-light: #e8f5e9;
+    --error-red: #d32f2f;
+    --error-light: #ffebee;
+    --star-gold: #ffc107;
+    --border-light: #eee;
+    --border-medium: #ccc;
+    --primary-font: 'Helvetica Neue', Arial, sans-serif;
+    --section-padding: 40px 5%; /* Consistent padding */
+    --card-width-slider: 280px; /* Width of cards in sliders */
+}
+
+body {
+    font-family: var(--primary-font);
+    margin: 0;
+    background-color: var(--yelp-light);
+    color: var(--yelp-dark);
+    line-height: 1.6;
+}
+
+/* ======================
+   HEADER & NAVBAR (Mostly Unchanged)
+   ====================== */
+header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      /* position: sticky; */ /* REMOVED - This stops it from sticking */
+    /* top: 0; */           /* REMOVED - No longer needed */
+    /* z-index: 100; */     /* REMOVED - No longer needed for stickiness */
+    /* width: 100%; */      /* REMOVED - May not be needed, test layout */
+    animation: slideDown 0.5s ease-out;
+}
+/* ... (rest of header/navbar styles mostly unchanged) ... */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%; /* Slightly reduced padding */
+    max-width: 1400px; /* Wider max-width */
+    margin: 0 auto;
+    min-height: 55px; /* Adjust height slightly */
+}
+.logo { font-size: 1.6rem; }
+.navbar nav { gap: 10px; } /* Reduce nav gap */
+.navbar nav a { font-size: 0.95rem; padding: 6px 10px; }
+
+/* ======================
+   HERO SECTION & SEARCH
+   ====================== */
+.hero {
+    /* ... (background styles unchanged) ... */
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../assets/download.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 50px 20px 60px 20px; /* Adjusted padding */
+    position: relative; /* For potential overlays if needed */
+}
+.hero h1 { font-size: 2rem; margin-bottom: 10px; }
+.hero p { font-size: 1.05rem; margin-bottom: 30px; }
+
+.hero-search-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.search-form {
+    display: flex;
+    background-color: white;
+    border-radius: 4px;
+    overflow: hidden; /* Ensure button stays inside */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.search-form input[type="search"] {
+    flex-grow: 1;
+    border: none;
+    padding: 14px 20px; /* Generous padding */
+    font-size: 1rem;
+    outline: none;
+    color: var(--yelp-dark);
+}
+.search-form .btn-search {
+    background-color: var(--yelp-red);
+    color: white;
+    border: none;
+    padding: 0 20px; /* Adjust padding */
+    cursor: pointer;
+    font-size: 1.1rem; /* Slightly larger icon */
+    transition: background-color 0.2s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+.search-form .btn-search:hover {
+    background-color: #b71c1c;
+}
+
+/* ======================
+   AUTH SYSTEM (Unchanged)
+   ====================== */
+#auth-container { margin: 20px auto; padding: 15px; /* Adjusted */ }
+/* ... (rest of auth styles unchanged) ... */
+
+/* ======================
+   GENERAL SECTION STYLING
+   ====================== */
+.featured-section, /* Base for all featured sections */
+.needs-improvement,
+.claim-business-section,
+.home-review-section {
+    padding: var(--section-padding);
+    max-width: 1400px; /* Wider max-width */
+    margin: 25px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+}
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Space below header */
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 10px; /* Space between title and button */
+}
+.section-title {
+    color: var(--yelp-dark);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    border: none; /* Remove default border */
+    flex-grow: 1; /* Allow title to take space */
+}
+.section-title i {
+    color: var(--yelp-red);
+}
+.btn-see-more {
+    color: var(--yelp-blue-link);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+.btn-see-more:hover {
+    color: var(--yelp-red);
+    text-decoration: underline;
+}
+.btn-see-more i {
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+/* Top Featured Specific */
+.top-featured .section-title {
+    /* Optional: Different icon color or style */
+}
+
+/* Needs Improvement Specific */
+.needs-improvement { background-color: var(--warning-light); border: 1px solid var(--warning-border); }
+.needs-improvement .section-title { color: var(--warning-orange); }
+.needs-improvement-badge { /* ... (style unchanged) ... */ }
+
+/* ======================
+   BUSINESS GRID (for Featured & Needs Improvement)
+   ====================== */
+.business-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Slightly smaller minmax */
+    gap: 20px;
+}
+/* Styles for .business-card, .business-img, .business-info, etc. (Keep previous styles, maybe minor tweaks) */
+.business-card {
+    background: white; border-radius: 6px; /* Slightly less round */
+    overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex; flex-direction: column; /* Ensure card layout */
+}
+.business-card:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.12); }
+.business-img { height: 150px; background-color: var(--yelp-light); position: relative; }
+.business-info { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; }
+.business-name { color: var(--yelp-red); margin: 0 0 5px; font-size: 1.1rem; font-weight: bold; }
+.business-rating { color: var(--star-gold); margin-bottom: 5px; font-size: 0.85rem; line-height: 1; }
+.business-rating .review-count { margin-left: 4px; font-size: 0.9em; color: var(--admin-text-light); }
+.business-category { font-size: 0.75rem; color: #888; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.business-location-summary { font-size: 0.85rem; color: #555; margin-top: auto; /* Push location to bottom */ line-height: 1.4; padding-top: 5px; }
+/* Card Actions (View Details Button Area) */
+.card-actions {
+    padding: 10px 12px;
+    margin-top: 10px; /* Space above button */
+    text-align: center;
+    border-top: 1px solid var(--border-light);
+    background-color: #fafafa;
+}
+.btn-details { /* Uses .btn and .btn-small */ }
+
+/* ======================
+   SLIDER SECTIONS
+   ====================== */
+.slider-section .business-slider-container {
+    overflow-x: auto; /* Enable horizontal scroll */
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    white-space: nowrap; /* Keep items in a single line */
+    padding: 10px 0 15px 0; /* Padding for scrollbar space */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--border-medium) var(--yelp-light); /* Firefox */
+}
+/* Webkit Scrollbar Styles */
+.slider-section .business-slider-container::-webkit-scrollbar { height: 8px; }
+.slider-section .business-slider-container::-webkit-scrollbar-track { background: var(--yelp-light); border-radius: 4px; }
+.slider-section .business-slider-container::-webkit-scrollbar-thumb { background-color: var(--border-medium); border-radius: 4px; }
+.slider-section .business-slider-container::-webkit-scrollbar-thumb:hover { background-color: #aaa; }
+
+.slider-section .business-slider {
+    /* No specific styles needed here if using white-space: nowrap */
+    display: block; /* Or flex */
+}
+
+.slider-section .business-card {
+    display: inline-block; /* Lay out cards horizontally */
+    width: var(--card-width-slider); /* Fixed width for cards in slider */
+    vertical-align: top; /* Align cards nicely */
+    margin-right: 15px; /* Space between cards */
+    white-space: normal; /* Allow text wrapping inside card */
+}
+.slider-section .business-card:last-child {
+    margin-right: 0; /* No margin on the last card */
+}
+
+/* ======================
+   CLAIM BUSINESS SECTION
+   ====================== */
+.claim-business-section {
+    text-align: center;
+    background-color: var(--yelp-red);
+    color: white;
+    padding: 40px 20px;
+    border-radius: 0; /* Full width feel */
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.claim-business-section h2 {
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.claim-business-section p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn-claim {
+    background-color: white;
+    color: var(--yelp-red);
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border: 2px solid white;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-claim:hover {
+    background-color: rgba(255,255,255,0.9);
+    color: #a01b1b;
+}
+.btn-claim i {
+    margin-right: 10px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+.claim-business-section p small {
+    display: block;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+.claim-business-section p small a {
+    color: white;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.claim-business-section p small a:hover {
+    color: #eee;
+}
+
+
+/* ==========================================
+   ENHANCED REVIEW FORM STYLING (Homepage)
+   ========================================== */
+.home-review-section {
+    max-width: 800px; /* Limit width */
+    /* background: #f0f0f0; Slightly different background */
+}
+.home-review-section h2 { text-align: center; }
+.home-review-section > p { text-align: center; color: #666; margin-bottom: 25px; }
+
+#add-review-form-home { /* Styles for the form itself */ }
+
+/* Inherit form-group, form-control styles */
+/* Styles needed for star ratings and photo upload (copied/adapted from business-detail.css) */
+.rating-group { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.star-rating-input { display: inline-flex; font-size: 1.8rem; color: var(--border-medium); cursor: pointer; }
+.star-rating-input i { transition: color 0.1s ease-in-out; }
+.star-rating-input i:hover { color: var(--star-gold); }
+/* Color stars based on hover/selection */
+.star-rating-input.rating-1 i:nth-child(-n+1),
+.star-rating-input.rating-2 i:nth-child(-n+2),
+.star-rating-input.rating-3 i:nth-child(-n+3),
+.star-rating-input.rating-4 i:nth-child(-n+4),
+.star-rating-input.rating-5 i:nth-child(-n+5) {
+    color: var(--star-gold);
+}
+.star-rating-input i.fas { /* Ensure Font Awesome 5 solid style */ font-weight: 900; }
+
+.rating-hover-text { font-size: 0.9rem; color: var(--admin-text-light); min-width: 120px; /* Give space */ text-align: left; }
+.rating-hover-text.rating-1 { color: #ef5350; } /* Red */
+.rating-hover-text.rating-2 { color: #ff7043; } /* Orange */
+.rating-hover-text.rating-3 { color: var(--star-gold); } /* Yellow */
+.rating-hover-text.rating-4 { color: #8bc34a; } /* Light Green */
+.rating-hover-text.rating-5 { color: var(--success-green); } /* Green */
+
+.sub-ratings-section { margin-top: 25px; padding-top: 15px; border-top: 1px dashed var(--border-light); }
+.sub-ratings-section > label { font-weight: bold; margin-bottom: 15px; display: block; font-size: 1rem; }
+.sub-rating-group { justify-content: space-between; margin-bottom: 10px; }
+.sub-rating-label { font-weight: 500; min-width: 90px; color: #444; }
+.sub-rating-input { font-size: 1.3rem; } /* Smaller stars for sub-ratings */
+
+.photo-upload-group img {
+    display: block;
+    max-width: 150px;
+    max-height: 150px;
+    margin-top: 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    object-fit: cover;
+}
+.photo-upload-group small { display: block; margin-top: 5px; color: #777; font-size: 0.85rem; }
+
+#review-login-prompt-home p { text-align: center; font-size: 1.05rem; color: #555; }
+.link-button {
+    background: none; border: none; color: var(--yelp-blue-link);
+    text-decoration: underline; cursor: pointer; font-size: inherit; padding: 0;
+}
+.link-button:hover { color: var(--yelp-red); }
+
+/* ======================
+   LOADING SPINNERS / PLACEHOLDERS
+   ====================== */
+.loading-placeholder,
+.loading-message,
+.empty-section-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    color: var(--admin-text-light);
+    font-style: italic;
+    width: 100%;
+    min-height: 100px; /* Give it some height */
+    text-align: center;
+    /* If parent is grid, allow spanning */
+    grid-column: 1 / -1;
+    box-sizing: border-box;
+}
+.loading-spinner {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--yelp-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ======================
+   RESPONSIVE DESIGN
+   ====================== */
+@media (max-width: 992px) {
+     .navbar { max-width: 95%; padding: 10px 3%; }
+     .featured-section, .needs-improvement, .claim-business-section, .home-review-section { padding: 30px 3%; }
+     .section-title { font-size: 1.4rem; }
+     .business-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+     :root { --card-width-slider: 260px; } /* Adjust slider card width */
+}
+
+@media (max-width: 768px) {
+    /* --- Mobile Header/Navbar --- */
+    .navbar { flex-direction: column; align-items: flex-start; padding: 10px 5%; }
+    .logo { margin-bottom: 10px; }
+    .navbar nav { flex-direction: column; align-items: flex-start; width: 100%; gap: 5px; order: 3; }
+    .navbar nav a { padding: 8px 0; width: 100%; }
+    #auth-container { position: static; transform: none; width: 100%; justify-content: flex-start; margin: 0 0 10px 0; padding: 10px 0; order: 2; flex-wrap: wrap; gap: 10px; background: none; box-shadow: none;}
+    #auth-container button, #auth-container #my-profile-link { background: var(--yelp-red); color: white; box-shadow: none; }
+
+
+    .hero { padding: 40px 15px 50px 15px; }
+    .hero h1 { font-size: 1.7rem; }
+    .hero p { font-size: 1rem; margin-bottom: 20px;}
+    .search-form input[type="search"] { padding: 12px 15px; font-size: 0.9rem;}
+    .search-form .btn-search { padding: 0 15px; font-size: 1rem;}
+
+    .featured-section, .needs-improvement, .claim-business-section, .home-review-section { padding: 25px 5%; margin: 20px auto; }
+    .section-title { font-size: 1.3rem; }
+    .business-grid { grid-template-columns: 1fr; gap: 15px; } /* Single column grid */
+    :root { --card-width-slider: 240px; } /* Smaller cards in slider */
+    .slider-section .business-card { width: var(--card-width-slider); }
+
+    .claim-business-section h2 { font-size: 1.5rem; }
+    .claim-business-section p { font-size: 1rem; }
+    .btn-claim { padding: 10px 25px; font-size: 1rem; }
+
+    .home-review-section { max-width: 100%; }
+    .sub-rating-group { flex-direction: column; align-items: flex-start; gap: 5px;}
+    .star-rating-input { font-size: 1.5rem; } /* Smaller stars */
+    .sub-rating-input { font-size: 1.2rem; }
+
+}
+@media (max-width: 480px) {
+     .logo { font-size: 1.4rem; }
+     .hero h1 { font-size: 1.5rem; }
+     :root { --card-width-slider: 220px; }
+     .business-card { font-size: 0.9rem; }
+     .business-name { font-size: 1rem; }
+     .section-title { font-size: 1.2rem; }
+     .form-control, .search-form input[type="search"] { font-size: 0.85rem; padding: 10px 12px; }
+     .btn { padding: 10px 20px; font-size: 0.9rem; }
+     .btn-small { padding: 5px 10px; font-size: 0.8rem; }
+     .claim-business-section h2 { font-size: 1.3rem; }
+}
+
+/* Styling for Best Restaurant of the Week */
+.best-weekly-restaurant {
+    /* Optional: Add a different background or border if desired */
+    /* background-color: #fffbee; */
+    /* border: 1px solid var(--star-gold); */
+}
+
+.best-weekly-restaurant .section-title i {
+    color: var(--star-gold); /* Trophy icon color */
+}
+
+.weekly-best-container {
+    /* Center the single card if needed, or just let it flow */
+    display: flex; /* Use flex to potentially center */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically if container has height */
+    padding: 20px 0; /* Add some padding */
+    min-height: 250px; /* Ensure it has some height for loading/empty */
+}
+
+.weekly-best-container .business-card {
+    /* Limit width if needed, or let it take the space */
+    max-width: 350px; /* Example max-width */
+    width: 100%; /* Allow it to shrink */
+    margin: 0; /* Remove default margins if centered */
+}
+
+.weekly-best-container .empty-section-message,
+.weekly-best-container .loading-placeholder {
+     /* Ensure messages take full width if flex is used */
+    width: 100%;
+    text-align: center;
+}
+
+/* Styles for Best Eatery Sections */
+.best-daily-eatery,
+.best-weekly-eatery { /* Added .best-weekly-eatery */
+    /* Optional: Add a different background or border if desired */
+}
+
+.best-daily-eatery .section-title i {
+    color: var(--yelp-red); /* Or some other "daily" color */
+}
+.best-weekly-eatery .section-title i {
+    color: var(--star-gold); /* Trophy icon color for weekly */
+}
+
+.daily-best-container,
+.weekly-persistent-best-container { /* Added .weekly-persistent-best-container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    min-height: 250px;
+}
+
+.daily-best-container .business-card,
+.weekly-persistent-best-container .business-card { /* Added .weekly-persistent-best-container */
+    max-width: 350px;
+    width: 100%;
+    margin: 0;
+}
+
+.daily-best-container .empty-section-message,
+.daily-best-container .loading-placeholder,
+.weekly-persistent-best-container .empty-section-message, /* Added */
+.weekly-persistent-best-container .loading-placeholder { /* Added */
+    width: 100%;
+    text-align: center;
+}
+
+/* Add these styles to /Styles/index.css */
+
+/* --- Hamburger Menu --- */
+.hamburger-menu {
+    display: none; /* Hidden by default on larger screens */
+    background: none;
+    border: none;
+    font-size: 1.8rem; /* Adjust size as needed */
+    color: var(--yelp-dark, #333); /* Use your theme's dark color */
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 15px; /* Space from logo if it's the only other item */
+    z-index: 1100; /* Ensure it's on top */
+}
+
+.hamburger-menu .fa-bars {
+    display: block; /* Show by default */
+}
+
+.hamburger-menu .fa-times {
+    display: none; /* Hide by default */
+}
+
+.hamburger-menu.open .fa-bars {
+    display: none; /* Hide bars icon when menu is open */
+}
+
+.hamburger-menu.open .fa-times {
+    display: block; /* Show X icon when menu is open */
+}
+
+
+/* --- Responsive Adjustments for Navigation --- */
+@media (max-width: 768px) { /* Adjust breakpoint if needed (matches your listings.css) */
+    .navbar nav {
+        display: none; /* Hide standard navigation links */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Position below the header */
+        left: 0;
+        width: 100%;
+        background-color: #fff; /* Or your header background */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-top: 1px solid var(--border-light, #eee);
+        padding-top: 10px;
+        padding-bottom: 10px;
+        z-index: 1000; /* Below hamburger button but above page content */
+    }
+
+    .navbar nav.nav-active {
+        display: flex; /* Show navigation when active */
+    }
+
+    .navbar nav a {
+        /* Adjust link styling for vertical menu */
+        margin-left: 0;
+        padding: 12px 20px; /* Suitable for touch targets */
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid var(--border-light, #f0f0f0); /* Thin separator */
+    }
+    .navbar nav a:last-child {
+        border-bottom: none; /* No border for the last item */
+    }
+
+    /* Override hover/active border from desktop if it doesn't fit mobile */
+    .navbar nav a:hover,
+    .navbar nav a.active {
+        border-bottom-color: var(--border-light, #f0f0f0); /* Keep separator consistent */
+        /* Or if you want the red line active state: */
+        /* border-bottom: 1px solid var(--yelp-red); */
+        background-color: var(--yelp-light, #f5f5f5); /* Slight hover background */
+    }
+    .navbar nav a.active {
+        color: var(--yelp-red); /* Active link color */
+        font-weight: bold;
+    }
+
+
+    .hamburger-menu {
+        display: block; /* Show hamburger button on small screens */
+    }
+
+    /* If your #auth-container was active, you might hide it or move it into the nav here: */
+    /*
+    .navbar #auth-container {
+        display: none;
+    }
+    */
+}

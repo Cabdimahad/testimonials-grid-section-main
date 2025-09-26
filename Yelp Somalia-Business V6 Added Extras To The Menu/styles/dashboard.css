@@ -1,0 +1,502 @@
+/* styles/dashboard.css - Self-Contained Styles for Business Dashboard */
+
+/* --- Base & Reset --- */
+:root {
+    --yelp-red: #d32323;
+    --yelp-dark: #333333;
+    --yelp-grey: #666666;
+    --yelp-light-grey: #f5f5f5;
+    --yelp-border-light: #e6e6e6;
+    --yelp-primary-light: #fdecea;
+    --success-green: #28a745;
+    --error-red: #dc3545;
+    --link-blue: #007bff;
+    --font-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --sidebar-width-desktop: 250px;
+    --header-height: 60px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: var(--font-primary); font-size: 16px; line-height: 1.6; color: var(--yelp-dark); background-color: #f4f7f6; }
+body { display: flex; flex-direction: column; }
+a { color: var(--link-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* --- Header --- */
+header {
+    background-color: #ffffff; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky; top: 0; z-index: 1000; height: var(--header-height);
+}
+.navbar { display: flex; align-items: center; justify-content: space-between; height: 100%; max-width: 1200px; margin: 0 auto; }
+.navbar .logo { font-size: 1.5rem; font-weight: bold; color: var(--yelp-dark); }
+.navbar .logo span { color: var(--yelp-red); }
+#auth-container-placeholder { margin-left: auto; display: flex; align-items: center; }
+#auth-container-placeholder .btn-header-auth {
+    background-color: transparent; color: var(--yelp-red); border: 1px solid var(--yelp-red);
+    padding: 7px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;
+    margin-left: 10px; font-weight: 500; transition: background-color 0.2s, color 0.2s;
+}
+#auth-container-placeholder .btn-header-auth:hover { background-color: var(--yelp-red); color: white; }
+#dashboard-user-logged-in { display: none; align-items: center; color: var(--yelp-grey); font-size: 0.9rem; }
+#dashboard-user-email-display { font-weight: 500; margin-right: 15px; color: var(--yelp-dark); }
+#dashboard-user-logged-out { display: flex; }
+
+/* --- Main Dashboard Layout --- */
+.dashboard-container {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Loading, Error, Auth Prompts (Full Screen / Prominent) */
+.loading-message, .auth-prompt, #dashboard-error-container {
+    display: none; /* Handled by JS */
+    flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 40px; width: 100%;
+}
+.loading-message, .auth-prompt {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.98); z-index: 2000;
+}
+#dashboard-error-container .error-message {
+    color: var(--error-red); background-color: #f8d7da; border: 1px solid #f5c6cb;
+    padding: 15px 20px; border-radius: 5px; max-width: 600px; margin: 20px auto;
+}
+.loading-spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--yelp-red); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.loading-message p, .auth-prompt p { font-size: 1.1rem; color: var(--yelp-grey); }
+.link-button {
+    background: none; border: none; color: var(--link-blue); text-decoration: underline;
+    cursor: pointer; font-size: inherit; padding: 0; margin-top: 10px;
+}
+
+#dashboard-app-content {
+    flex-grow: 1;
+    width: 100%;
+    display: flex; /* Changed from none/block in previous step, ensure it's flex for sidebar + content layout */
+}
+
+
+/* Sidebar - DESKTOP (BASE) STYLES */
+.dashboard-sidebar {
+    width: var(--sidebar-width-desktop);
+    background-color: #ffffff;
+    border-right: 1px solid var(--yelp-border-light);
+    border-bottom: none;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    position: static; /* Changed from relative/sticky to static */
+    overflow-x: visible;
+    white-space: normal;
+    z-index: auto; /* Can be auto or 1 */
+}
+.sidebar-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--yelp-border-light);
+    margin-bottom: 10px;
+    display: block;
+}
+.sidebar-header h3 { margin: 0 0 5px 0; font-size: 1.15rem; color: var(--yelp-dark); font-weight: 600; }
+.plan-badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 10px; background-color: #e0e7ff; color: #4a5cc0; display: inline-block; font-weight: 500; }
+
+.dashboard-sidebar ul {
+    list-style: none;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.dashboard-sidebar ul li {
+    flex-shrink: 1;
+}
+.dashboard-sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-left: 4px solid transparent;
+    border-bottom: none;
+    transition: all 0.2s ease;
+}
+.dashboard-sidebar ul li a i { margin-right: 15px; width: 20px; text-align: center; color: #888; font-size: 1rem; transition: color 0.2s ease; }
+.dashboard-sidebar ul li a:hover { background-color: var(--yelp-light-grey); color: var(--yelp-red); }
+.dashboard-sidebar ul li a:hover i { color: var(--yelp-red); }
+.dashboard-sidebar ul li a.active {
+    background-color: var(--yelp-primary-light);
+    color: var(--yelp-red);
+    font-weight: 600;
+    border-left-color: var(--yelp-red);
+    border-bottom-color: transparent;
+}
+.dashboard-sidebar ul li a.active i { color: var(--yelp-red); }
+.dashboard-sidebar ul li:nth-last-child(2) a[href="#settings"] {
+    margin-top: auto;
+    margin-left: 0;
+}
+.dashboard-sidebar ul li a#dashboard-logout-button {
+    border-top: 1px solid var(--yelp-border-light);
+    margin-left: 0;
+}
+.dashboard-sidebar ul li a#dashboard-logout-button:hover { background-color: #ffebee; }
+
+/* Dashboard Content Area - DESKTOP (BASE) STYLES */
+.dashboard-content {
+    flex-grow: 1;
+    padding: 25px 35px;
+    overflow-y: auto;
+    background-color: #f9fafb;
+    margin-top: 0;
+}
+.content-section { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 30px; }
+.content-section:last-child { margin-bottom: 0; }
+.content-section h2 { font-size: 1.8rem; color: var(--yelp-dark); margin-top: 0; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--yelp-border-light); font-weight: 600; }
+
+/* General Button Styling */
+.btn { display: inline-block; padding: 10px 20px; font-size: 0.95rem; font-weight: 500; text-align: center; text-decoration: none; border: 1px solid transparent; border-radius: 5px; cursor: pointer; transition: all 0.2s ease; line-height: 1.5; }
+.btn-primary { background-color: var(--yelp-red); color: white; border-color: var(--yelp-red); }
+.btn-primary:hover { background-color: #b71c1c; border-color: #b71c1c; color: white; text-decoration: none; }
+.btn-secondary { background-color: #6c757d; color: white; border-color: #6c757d; }
+.btn-secondary:hover { background-color: #5a6268; border-color: #545b62; color: white; text-decoration: none; }
+.btn-block { display: block; width: 100%; }
+.btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* Overview Section & Analytics Section (Shared Stat Card Styling) */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 30px; }
+.stat-card { background-color: #ffffff; padding: 25px; border-radius: 6px; border: 1px solid var(--yelp-border-light); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.stat-card h4 { margin-top: 0; margin-bottom: 10px; font-size: 0.9rem; color: var(--yelp-grey); font-weight: 600; text-transform: uppercase; }
+.stat-card p { font-size: 1.8rem; font-weight: 700; color: var(--yelp-dark); margin: 0; }
+
+/* Chart Styles */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Adjust minmax for responsiveness */
+    gap: 30px;
+    margin-top: 30px;
+}
+.chart-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.chart-wrapper h3 {
+    font-size: 1.2rem;
+    color: var(--yelp-dark);
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+}
+.chart-wrapper canvas {
+    max-width: 100%;
+    max-height: 350px; /* Adjust height as needed */
+    width: 100% !important; /* Important to override Chart.js inline style if needed */
+    height: auto !important; /* For responsiveness */
+}
+.chart-message {
+    text-align: center;
+    color: var(--yelp-grey);
+    padding: 20px;
+    font-style: italic;
+}
+
+.quick-actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--yelp-border-light); }
+.quick-actions h3 { margin-bottom: 15px; font-size: 1.2rem; color: var(--yelp-dark); }
+.quick-link-btn { margin-right: 10px; margin-bottom: 10px; }
+
+/* Edit Info Form */
+.form-group { margin-bottom: 25px; }
+/* REPLACE with this rule */
+.content-section form label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #495057; }
+.content-section form input[type="text"], .content-section form input[type="tel"], .content-section form input[type="url"], .content-section form input[type="file"], .content-section form textarea {
+    width: 100%; padding: 12px 15px; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #fff; transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+/* REPLACE with this rule */
+.content-section form input[type="text"]:focus, .content-section form input[type="tel"]:focus, .content-section form input[type="url"]:focus, .content-section form textarea:focus {
+    border-color: var(--yelp-red); outline: 0; box-shadow: 0 0 0 0.2rem rgba(211, 35, 35, 0.25);
+}
+.content-section form textarea { min-height: 120px; resize: vertical; }
+#edit-business-photo-preview { display: none; max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px; border-radius: 4px; margin-top: 10px; background-color: var(--yelp-light-grey); }
+.form-message { padding: 8px 0; font-size: 0.85rem; margin-top: 5px; display: none; }
+.form-message.success { color: var(--success-green); }
+.form-message.error { color: var(--error-red); }
+.form-message.submitting { color: var(--yelp-grey); }
+
+/* Links to external tools */
+.content-section .note { font-size: 0.9rem; color: var(--yelp-grey); margin-top: 10px; background-color: var(--yelp-light-grey); padding: 10px; border-left: 3px solid var(--yelp-red); border-radius: 0 4px 4px 0; }
+
+/* Settings Section */
+.setting-item { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dotted var(--yelp-border-light); }
+.setting-item:last-child { border-bottom: none; padding-bottom: 0; }
+.setting-item h4 { font-size: 1rem; color: var(--yelp-dark); margin-bottom: 5px; }
+.setting-item p { color: var(--yelp-grey); }
+
+/* No Business Associated Prompt */
+#no-business-associated-prompt h2 { margin-bottom: 15px; }
+#no-business-associated-prompt p { margin-bottom: 10px; line-height: 1.5; }
+#no-business-associated-prompt #no-business-user-email { font-weight: bold; }
+
+
+/* Footer */
+.site-footer { background-color: var(--yelp-dark); color: #f8f9fa; padding: 20px 0; text-align: center; font-size: 0.9rem; margin-top: auto; }
+
+/* Responsive Adjustments */
+
+@media (max-width: 992px) {
+    :root {
+        --sidebar-width-desktop: 220px;
+    }
+    .dashboard-content { padding: 20px; }
+    .content-section h2 { font-size: 1.6rem; }
+    .charts-container { grid-template-columns: 1fr; /* Stack charts on smaller screens */ }
+
+}
+
+@media (max-width: 768px) {
+    header .navbar { padding: 0 15px; }
+    #auth-container-placeholder .btn-header-auth { font-size: 0.8rem; padding: 6px 10px;}
+    #dashboard-user-logged-in { font-size: 0.85rem; }
+
+    #dashboard-app-content {
+        flex-direction: column;
+    }
+
+    .sidebar-header { display: none; }
+    .dashboard-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-right: none;
+        border-bottom: 1px solid var(--yelp-border-light);
+        box-shadow: none;
+        position: sticky;
+        top: var(--header-height);
+        background-color: #ffffff;
+        z-index: 900;
+        padding-top: 0;
+    }
+    .dashboard-sidebar ul {
+        flex-direction: row;
+        width: auto;
+        flex-grow: 0;
+    }
+    .dashboard-sidebar ul li { flex-shrink: 0; }
+    .dashboard-sidebar ul li a {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 15px 18px;
+    }
+    .dashboard-sidebar ul li a.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--yelp-red);
+    }
+    .dashboard-sidebar ul li:nth-last-child(2) a[href="#settings"],
+    .dashboard-sidebar ul li a#dashboard-logout-button {
+        margin-top: 0;
+        border-top: none;
+        margin-left: auto;
+    }
+    .dashboard-content {
+        padding: 20px 15px;
+    }
+    .content-section h2 { font-size: 1.4rem; }
+    .stats-grid { grid-template-columns: 1fr; }
+    #edit-info-form input[type="text"],
+    #edit-info-form input[type="tel"],
+    #edit-info-form input[type="url"],
+    #edit-info-form textarea {
+        padding: 10px 12px;
+    }
+    .charts-container { grid-template-columns: 1fr; /* Ensure charts stack on mobile too */ }
+    .chart-wrapper canvas { max-height: 300px; /* Adjust for mobile if needed */ }
+
+}
+
+@media (max-width: 480px) {
+    .navbar .logo { font-size: 1.3rem;}
+    #auth-container-placeholder .btn-header-auth { font-size: 0.75rem; padding: 5px 8px; margin-left: 5px;}
+    #dashboard-user-logged-in { font-size: 0.8rem; }
+
+    .dashboard-sidebar ul li a { padding: 12px 10px; }
+    .dashboard-sidebar ul li a i { margin-right: 8px; }
+    .content-section { padding: 20px 15px; }
+    .chart-wrapper canvas { max-height: 250px; /* Further adjust for very small screens */ }
+
+}
+
+/* In Styles/dashboard.css, add these new rules at the end */
+
+/* ============================================= */
+/* ===== NEW: Loyalty & Rewards Tab Styles ===== */
+/* ============================================= */
+
+.rewards-program-module {
+    background-color: var(--yelp-light-grey);
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    border: 1px solid var(--yelp-border-light);
+}
+
+.rewards-program-module:last-child {
+    margin-bottom: 0;
+}
+
+.rewards-program-module h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    margin: 0 0 10px 0;
+    color: var(--yelp-dark);
+}
+
+.rewards-program-module h3 i {
+    color: var(--yelp-red);
+}
+
+.module-description {
+    font-size: 0.95rem;
+    color: var(--yelp-grey);
+    margin-bottom: 20px;
+    max-width: 80%;
+}
+
+.program-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.program-status span {
+    font-weight: 500;
+}
+
+.program-status strong {
+    font-size: 1rem;
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.program-status strong.status-active {
+    background-color: var(--success-green);
+}
+
+.program-status strong.status-inactive {
+    background-color: var(--yelp-grey);
+}
+
+#toggle-loyalty-program-btn {
+    margin-left: auto; /* Pushes button to the right */
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+/* Make the "Disable" button red for emphasis */
+#toggle-loyalty-program-btn.is-active {
+    background-color: var(--error-red);
+    border-color: var(--error-red);
+    color: white;
+}
+#toggle-loyalty-program-btn.is-active:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+
+#loyalty-settings-form, #manual-stamp-form {
+    border-top: 1px dashed var(--yelp-border-light);
+    padding-top: 20px;
+}
+
+/* Re-use existing form-group styles from dashboard */
+#loyalty-settings-form .form-group, #manual-stamp-form .form-group {
+    margin-bottom: 20px;
+}
+
+#loyalty-settings-form label, #manual-stamp-form label {
+    font-weight: 600;
+}
+
+/* Re-use existing form-message styles from dashboard */
+#loyalty-settings-status, #manual-stamp-status {
+    /* These will inherit from .form-message defined earlier */
+    margin-top: 10px;
+    display: none; /* Initially hidden */
+}
+
+/* In Styles/dashboard.css */
+
+.social-input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.social-input-group i {
+    width: 40px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--yelp-grey);
+    border: 1px solid #ced4da;
+    border-right: none;
+    padding: 11px 0;
+    background-color: #e9ecef;
+    border-radius: 4px 0 0 4px;
+}
+
+.social-input-group input[type="url"] {
+    border-radius: 0 4px 4px 0;
+}
+
+
+/* In /styles/dashboard.css - Add to the end */
+
+/* --- New Styles for Payment Info in Edit Form --- */
+#edit-info-form .full-width-grid {
+    grid-column: 1 / -1; /* For forms using a grid layout */
+}
+.payment-choice-container {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.payment-radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.payment-radio-label input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+.payment-input-group {
+    transition: opacity 0.3s;
+    margin-bottom: 10px;
+}
+.payment-input-group.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+.payment-input-group .sub-label {
+    font-size: 0.85em;
+    font-weight: 500;
+    color: #666;
+}

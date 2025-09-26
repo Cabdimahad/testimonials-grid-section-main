@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Orders | Yelp Somalia</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/Assets/Logo.png">
+    <link rel="stylesheet" href="/Styles/index.css">
+    <link rel="stylesheet" href="/Styles/live-orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- Your standard header HTML from business-detail.html -->
+        <div class="navbar">
+            <a href="/index.html" class="logo"><i class="fas fa-arrow-left"></i></a>
+            <!-- <a href="#" class="logo">Yelp <span>Somalia</span> | Business</a> -->
+        </div>
+    </header>
+
+    <main class="live-orders-container">
+        <div id="loading-orders" class="loading-message"><div class="loading-spinner"></div><p>Loading live orders...</p></div>
+        <div id="orders-error" class="error-message" style="display: none;"></div>
+        <div id="orders-auth-prompt" class="auth-prompt" style="display: none;">
+            <p>You must be logged in as the business owner to view live orders.</p>
+            <p>Please <button type="button" class="link-button" id="orders-login-prompt-button">log in</button>.</p>
+        </div>
+
+        <div id="live-orders-content" style="display: none;">
+            <h1 id="orders-business-name">Live Orders for [Business Name]</h1>
+            <div class="orders-controls">
+                <label for="sort-orders">Sort by:</label>
+                <select id="sort-orders">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="status_pending">Status: Pending First</option>
+                </select>
+                 <!-- Add this: -->
+<a href="#" id="view-archived-orders-link" class="btn btn-sm btn-outline-secondary">View Completed/Cancelled</a>
+                <button id="toggle-sound-button" class="btn btn-sm btn-secondary"><i class="fas fa-volume-mute"></i> Enable Sound</button>
+            </div>
+
+            <!-- TABS for Order Types -->
+            <div class="order-type-tabs">
+                <button class="tab-button active" data-order-type="eatingIn">Eating In (<span id="eatingIn-count" class="order-count-badge">0</span>)</button>
+                <button class="tab-button" data-order-type="takeaway">Takeaway (<span id="takeaway-count" class="order-count-badge">0</span>)</button>
+                <button class="tab-button" data-order-type="delivery">Delivery (<span id="delivery-count" class="order-count-badge">0</span>)</button>
+                <button class="tab-button" data-order-type="other">Other (<span id="other-count" class="order-count-badge">0</span>)</button>
+            </div>
+
+            <!-- PANELS for Orders of Each Type -->
+            <div id="eatingIn-orders-panel" class="order-type-panel active-panel">
+                <p class="no-orders-message" style="display:none;">No 'Eating In' orders.</p>
+                <!-- Eating In orders will be rendered here -->
+            </div>
+            <div id="takeaway-orders-panel" class="order-type-panel">
+                <p class="no-orders-message" style="display:none;">No 'Takeaway' orders.</p>
+                <!-- Takeaway orders will be rendered here -->
+            </div>
+            <div id="delivery-orders-panel" class="order-type-panel">
+                <p class="no-orders-message" style="display:none;">No 'Delivery' orders.</p>
+                <!-- Delivery orders will be rendered here -->
+            </div>
+            <div id="other-orders-panel" class="order-type-panel">
+                <p class="no-orders-message" style="display:none;">No 'Other' type orders.</p>
+                <!-- Other orders will be rendered here -->
+            </div>
+
+        </div>
+    </main>
+
+    <footer><!-- Your standard footer --></footer>
+    <audio id="new-order-sound" src="/assets/notification.mp3" preload="auto"></audio>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script type="module" src="/firebase-config/indexfirebaseConfig.js"></script>
+    <script type="module" src="/js/auth.js"></script>
+    <script src="/js/menu.js"></script>
+    <script type="module" src="/js/live-orders.js"></script>
+</body>
+</html>

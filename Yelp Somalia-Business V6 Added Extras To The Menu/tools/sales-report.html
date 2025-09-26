@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Reports | Business Dashboard</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/Assets/Logo.png">
+    <link rel="stylesheet" href="../Styles/index.css"> <!-- Base styles -->
+    <link rel="stylesheet" href="../Styles/sales-report.css"> <!-- Page-specific styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="/index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main class="sales-report-container">
+        <div id="loading-reports" class="loading-message">
+            <div class="loading-spinner"></div>
+            <p>Loading sales report tool...</p>
+        </div>
+        <div id="reports-error" class="error-message" style="display: none;"></div>
+        <div id="reports-auth-prompt" class="auth-prompt" style="display: none;">
+            <p>You must be logged in as the business owner to view sales reports.</p>
+            <p>Please return to the dashboard to log in.</p>
+        </div>
+
+        <div id="sales-report-content" style="display: none;">
+            <h1 id="reports-business-name">Sales Report for [Business Name]</h1>
+            
+            <form id="report-generator-form">
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="end-date">End Date</label>
+                    <input type="date" id="end-date" required>
+                </div>
+                <button type="submit" id="generate-report-btn" class="btn-generate">Generate Report</button>
+            </form>
+
+            <div id="report-loading-message" class="loading-message" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Crunching the numbers...</p>
+            </div>
+            
+            <div id="report-display-area" style="display: none;">
+                <!-- JS will populate this section with report results -->
+            </div>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script type="module" src="../firebase-config/indexfirebaseConfig.js"></script>
+    <script type="module" src="../js/sales-report.js"></script>
+</body>
+</html>

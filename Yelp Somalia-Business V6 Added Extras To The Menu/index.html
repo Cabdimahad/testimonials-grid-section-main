@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard - Yelp Somalia</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/Assets/Logo.png">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/auth-modals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ADD CHART.JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="../index.html" class="logo">Yelp <span>Somalia</span> | Business Admin</a>
+            <nav id="main-navigation">
+                <!-- Minimal nav for business app -->
+            </nav>
+            <div id="auth-container-placeholder">
+                 <div id="dashboard-user-logged-in" style="display: none;">
+                    Welcome, <span id="dashboard-user-email-display">User</span>!
+                </div>
+                <div id="dashboard-user-logged-out" style="display: flex;">
+                    <button id="dashboard-show-login-modal-button" class="btn btn-header-auth">Login</button>
+                    <button id="dashboard-show-signup-modal-button" class="btn btn-header-auth">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============== AUTH MODALS for Business Dashboard ============== -->
+    <div id="auth-modals-container">
+        <div id="dashboard-login-modal" class="auth-modal" style="display: none;">
+            <div class="auth-modal-content">
+                <button class="auth-modal-close-button" data-modal-id="dashboard-login-modal">×</button>
+                <form id="dashboard-login-form">
+                    <h3>Business Login</h3>
+                    <div class="form-group-modal"><label for="dashboard-login-email">Email</label><input type="email" id="dashboard-login-email" placeholder="your@email.com" required></div>
+                    <div class="form-group-modal"><label for="dashboard-login-password">Password</label><input type="password" id="dashboard-login-password" placeholder="Your Password" required></div>
+                    <div class="form-options"><a href="#" id="dashboard-forgot-password-link">Forgot Password?</a></div>
+                    <button type="submit" id="dashboard-login-submit-button" class="btn btn-primary btn-block">Login</button>
+                    <p id="dashboard-login-error" class="form-message error"></p>
+                </form>
+            </div>
+        </div>
+        <div id="dashboard-forgot-password-modal" class="auth-modal" style="display: none;">
+            <div class="auth-modal-content">
+                <button class="auth-modal-close-button" data-modal-id="dashboard-forgot-password-modal">×</button>
+                <form id="dashboard-forgot-password-form">
+                    <h3>Reset Password</h3>
+                    <p class="modal-instruction">Enter email for a reset link.</p>
+                    <div class="form-group-modal"><label for="dashboard-forgot-email">Email Address</label><input type="email" id="dashboard-forgot-email" placeholder="your@email.com" required></div>
+                    <button type="submit" id="dashboard-forgot-submit-button" class="btn btn-primary btn-block">Send Reset Link</button>
+                    <p id="dashboard-forgot-status" class="form-message"></p>
+                </form>
+            </div>
+        </div>
+        <div id="dashboard-signup-modal" class="auth-modal" style="display: none;">
+            <div class="auth-modal-content">
+                <button class="auth-modal-close-button" data-modal-id="dashboard-signup-modal">×</button>
+                <form id="dashboard-signup-form">
+                    <h3>Create Business Account</h3>
+                    <div class="form-group-modal"><label for="dashboard-signup-username">Username (Optional)</label><input type="text" id="dashboard-signup-username" placeholder="Your Name or Business Name"></div>
+                    <div class="form-group-modal"><label for="dashboard-signup-email">Email</label><input type="email" id="dashboard-signup-email" placeholder="your@email.com" required></div>
+                    <div class="form-group-modal"><label for="dashboard-signup-password">Password</label><input type="password" id="dashboard-signup-password" placeholder="Min. 6 characters" required minlength="6"></div>
+                    <button type="submit" id="dashboard-signup-submit-button" class="btn btn-primary btn-block">Sign Up</button>
+                    <p id="dashboard-signup-error" class="form-message error"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ================================================================= -->
+
+    <main class="dashboard-container">
+        <div id="loading-dashboard" class="loading-message" style="display: flex;">
+            <div class="loading-spinner"></div>
+            <p>Loading your dashboard...</p>
+        </div>
+        <div id="dashboard-error-container" style="display: none; width: 100%; padding: 20px;">
+            <div id="dashboard-error" class="error-message"></div>
+        </div>
+        <div id="no-business-associated-prompt" class="content-section" style="display: none; text-align: center; margin: 50px auto; max-width: 600px;">
+            <h2>Business Not Found</h2>
+            <p>No business is currently associated with your account (<span id="no-business-user-email">user@example.com</span>).</p>
+            <p>If this is incorrect, please ensure you are logged in with the correct owner account. You can add a new business through the main Yelp Somalia website.</p>
+            <p>You can <a href="#" id="no-business-logout-link" class="link-button">log out</a> to try a different account.</p>
+        </div>
+
+        <div id="dashboard-app-content" style="display: none;">
+            <aside class="dashboard-sidebar">
+                <div class="sidebar-header"><h3 id="sidebar-business-name">Your Business</h3><span id="sidebar-current-plan" class="plan-badge">Basic</span></div>
+                <ul>
+                    <li><a href="#overview" class="active"><i class="fas fa-tachometer-alt"></i> Overview</a></li>
+                    <li><a href="#edit-info"><i class="fas fa-edit"></i> Edit Info</a></li>
+                    <li><a href="#manage-menu"><i class="fas fa-utensils"></i> Manage Menu</a></li>
+                    <li><a href="#rewards"><i class="fas fa-star"></i> Loyalty & Rewards</a></li>
+                    <li><a href="#live-orders"><i class="fas fa-concierge-bell"></i> Live Orders</a></li>
+                    <li><a href="#archived-orders"><i class="fas fa-archive"></i> Archived Orders</a></li>
+                    <li><a href="#analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <!-- ADD THIS NEW LINE -->
+                    <li><a href="#sales-reports"><i class="fas fa-dollar-sign"></i> Sales Reports</a></li>                   <li style="margin-top: auto;"><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#" id="dashboard-logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </aside>
+            <section class="dashboard-content">
+                <div id="overview" class="content-section">
+                    <h2>Dashboard Overview</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card"><h4>Business Name</h4><p id="overview-business-name">Loading...</p></div>
+                        <div class="stat-card"><h4>Category</h4><p id="overview-category">Loading...</p></div>
+                        <div class="stat-card"><h4>Plan</h4><p id="overview-plan">Loading...</p></div>
+                        <div class="stat-card"><h4>Status</h4><p id="overview-status">Loading...</p></div>
+                    </div>
+                    <div class="quick-actions"><h3>Quick Actions</h3><a href="#edit-info" class="btn btn-secondary quick-link-btn">Edit Info</a><a href="#manage-menu" class="btn btn-secondary quick-link-btn">Manage Menu</a><a href="#live-orders" class="btn btn-secondary quick-link-btn">Live Orders</a></div>
+                </div>
+
+                <!-- SECTION 1: EDIT INFO (PIN REMOVED) -->
+                <div id="edit-info" class="content-section" style="display: none;">
+                    <h2>Edit Business Information</h2>
+                    <form id="edit-info-form">
+                        <div class="form-group"><label for="edit-business-name">Business Name</label><input type="text" id="edit-business-name" required></div>
+                        <div class="form-group"><label for="edit-business-category">Category</label><input type="text" id="edit-business-category" placeholder="e.g., Restaurant, Cafe" required></div>
+                        <div class="form-group"><label for="edit-business-address">Address</label><input type="text" id="edit-business-address" required></div>
+                        <div class="form-group"><label for="edit-business-city">City</label><input type="text" id="edit-business-city" required></div>
+                        <div class="form-group"><label for="edit-business-phone">Primary Phone</label><input type="tel" id="edit-business-phone" required></div>
+                        <div class="form-group"><label for="edit-business-hours">Opening Hours</label><textarea id="edit-business-hours" rows="3" placeholder="e.g., Mon-Fri: 9am-6pm"></textarea></div>
+                        <div class="form-group"><label for="edit-business-description">Description</label><textarea id="edit-business-description" rows="5"></textarea></div>
+                        <div class="form-group">
+                            <label>Social Media Links (Optional)</label>
+                            <div class="social-input-group">
+                                <i class="fab fa-instagram"></i>
+                                <input type="url" id="edit-social-instagram" placeholder="https://instagram.com/your-username">
+                            </div>
+                            <div class="social-input-group">
+                                <i class="fab fa-facebook-f"></i>
+                                <input type="url" id="edit-social-facebook" placeholder="https://facebook.com/your-page">
+                            </div>
+                            <div class="social-input-group">
+                                <i class="fab fa-tiktok"></i>
+                                <input type="url" id="edit-social-tiktok" placeholder="https://tiktok.com/@your-username">
+                            </div>
+                        </div>
+                        <div class="form-group full-width-grid">
+                            <label>Payment Receiving Information</label>
+                            <div class="payment-choice-container">
+                                <label class="payment-radio-label">
+                                    <input type="radio" name="editPaymentType" value="merchant" id="edit-select-merchant">
+                                    <span>Merchant Account (Recommended)</span>
+                                </label>
+                                <label class="payment-radio-label">
+                                    <input type="radio" name="editPaymentType" value="evc" id="edit-select-evc">
+                                    <span>EVC+ Phone Number</span>
+                                </label>
+                            </div>
+                            <div class="payment-input-group" id="edit-merchant-input-group">
+                                <label for="edit-payment-number-merchant" class="sub-label">Merchant Number (6 digits)</label>
+                                <input type="tel" id="edit-payment-number-merchant" class="form-control" placeholder="Enter 6-digit number" maxlength="6">
+                            </div>
+                            <div class="payment-input-group" id="edit-evc-input-group">
+                                <label for="edit-payment-number-evc" class="sub-label">EVC+ Number (9 digits)</label>
+                                <input type="tel" id="edit-payment-number-evc" class="form-control" placeholder="Enter 9-digit number" maxlength="9">
+                            </div>
+                        </div>
+                        <div class="form-group"><label for="edit-business-photo">Profile Photo (Max 1.5MB)</label><input type="file" id="edit-business-photo-upload" accept="image/png,image/jpeg,image/gif,image/webp"><img id="edit-business-photo-preview" src="#" alt="Photo Preview" style="display:none;"><p id="edit-business-photo-status" class="form-message"></p></div>
+                        <button type="submit" id="save-info-button" class="btn btn-primary">Save Changes</button>
+                        <p id="edit-info-status" class="form-message"></p>
+                    </form>
+                </div>
+
+                <div id="manage-menu" class="content-section" style="display: none;">
+                    <h2>Manage Menu</h2><p>Create, update, and organize your menu.</p><a id="link-to-menu-editor" href="#" class="btn btn-primary" rel="noopener noreferrer">Open Menu Editor</a><p class="note">Click the button to open Menu Editor Page</p>
+                </div>
+
+                <!-- SECTION 2: LOYALTY & REWARDS (PIN ADDED) -->
+                <div id="rewards" class="content-section" style="display: none;">
+                    <h2>Loyalty & Rewards Management</h2>
+
+                    <div class="rewards-program-module">
+                        <h3><i class="fas fa-key"></i> Prize Redemption Settings</h3>
+                        <p class="module-description">Set the secret 4-digit PIN your staff will use to verify and redeem customer prizes for all loyalty programs.</p>
+                        <form id="redemption-settings-form">
+                            <div class="form-group">
+                                <label for="edit-redemption-pin">4-Digit Redemption PIN</label>
+                                <input type="text" id="edit-redemption-pin" inputmode="numeric" pattern="[0-9]{4}" title="Enter a 4-digit number for prize redemption." maxlength="4" placeholder="e.g., 1234" required>
+                            </div>
+                            <button type="submit" id="save-pin-btn" class="btn btn-primary">Save PIN</button>
+                            <p id="pin-settings-status" class="form-message"></p>
+                        </form>
+                    </div>
+
+                    <div class="rewards-program-module">
+                        <h3><i class="fas fa-fire-alt"></i> Weekly Streak Challenge</h3>
+                        <p class="module-description">Drive daily engagement with a competitive weekly challenge. The first user to review for 7 consecutive days wins a prize.</p>
+                        <div class="program-status">
+                            <span>Program Status:</span>
+                            <strong id="streak-status-display" class="status-inactive">Inactive</strong>
+                            <button id="toggle-streak-program-btn" class="btn btn-small">Enable</button>
+                        </div>
+                        <form id="streak-settings-form" style="display: none;">
+    <div class="form-group">
+        <label for="edit-weekly-prize">Weekly Streak Prize Description</label>
+        <input type="text" id="edit-weekly-prize" maxlength="100" placeholder="e.g., One Free Pizza, A Burger Meal">
+        <p class="note" style="margin-top: 5px; font-size: 0.8rem;">Describe the prize a user wins for a 7-day streak. This will be shown on their gift card.</p>
+    </div>
+    <button type="submit" id="save-streak-settings-btn" class="btn btn-primary">Save Streak Settings</button>
+    <p id="streak-settings-status" class="form-message"></p>
+</form>
+                    </div>
+
+                    <div class="rewards-program-module">
+                        <h3><i class="fas fa-stamp"></i> Digital Loyalty Card</h3>
+                        <p class="module-description">Reward your repeat customers. Offer a "Buy X, Get 1 Free" style promotion. You control the prize.</p>
+                        <div class="program-status">
+                            <span>Program Status:</span>
+                            <strong id="loyalty-status-display" class="status-inactive">Inactive</strong>
+                            <button id="toggle-loyalty-program-btn" class="btn btn-small">Enable</button>
+                        </div>
+                        <form id="loyalty-settings-form" style="display: none;">
+                            <div class="form-group">
+                                <label for="first-reward-desc">First-Time User Reward (after 5 stamps):</label>
+                                <input type="text" id="first-reward-desc" placeholder="e.g., Free Drink, $5 Off">
+                            </div>
+                            <div class="form-group">
+                                <label for="standard-reward-desc">Standard Reward (after 9 more stamps):</label>
+                                <input type="text" id="standard-reward-desc" placeholder="e.g., One Free Pizza, 15% Off">
+                            </div>
+                            <button type="submit" id="save-loyalty-settings-btn" class="btn btn-primary">Save Loyalty Settings</button>
+                            <p id="loyalty-settings-status" class="form-message"></p>
+                        </form>
+                    </div>
+
+                    <div class="rewards-program-module">
+                        <h3><i class="fas fa-plus-circle"></i> Manual Stamp Tool</h3>
+                        <p class="module-description">Grant a loyalty stamp to a customer who purchased in person. Ask the customer for their User ID from their Yelp Somalia profile.</p>
+                        <form id="manual-stamp-form">
+                            <div class="form-group">
+                                <label for="manual-stamp-user-id">Customer's User ID:</label>
+                                <input type="text" id="manual-stamp-user-id" placeholder="Enter or scan customer's User ID" required>
+                            </div>
+                            <button type="submit" id="grant-stamp-btn" class="btn btn-primary">Grant 1 Stamp</button>
+                            <p id="manual-stamp-status" class="form-message"></p>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="live-orders" class="content-section" style="display: none;">
+                    <h2>Live Orders</h2><p>View and manage incoming orders.</p><a id="link-to-live-orders" href="#" class="btn btn-primary" rel="noopener noreferrer">Open Live Orders</a><p class="note">Click the button to open Live Orders Page</p>
+                </div>
+                <div id="archived-orders" class="content-section" style="display: none;">
+                    <h2>Archived Orders</h2><p>View past completed or cancelled orders.</p><a id="link-to-archived-orders" href="#" class="btn btn-primary" rel="noopener noreferrer">View Archives</a><p class="note">Click the button to open Archived Orders Page</p>
+                </div>
+
+                <div id="analytics" class="content-section" style="display: none;">
+                    <h2>Business Analytics</h2>
+                    <p>Insights based on customer reviews.</p>
+                    <div class="stats-grid" id="analytics-stats-grid">
+                        <div class="stat-card"><h4>Total Reviews</h4><p id="analytics-total-reviews">Loading...</p></div>
+                        <div class="stat-card"><h4>Avg. Overall Rating</h4><p id="analytics-avg-rating">Loading...</p></div>
+                        <div class="stat-card"><h4>Avg. Food Rating</h4><p id="analytics-avg-food-rating">Loading...</p></div>
+                        <div class="stat-card"><h4>Avg. Service Rating</h4><p id="analytics-avg-service-rating">Loading...</p></div>
+                        <div class="stat-card"><h4>Avg. Environment Rating</h4><p id="analytics-avg-env-rating">Loading...</p></div>
+                        <div class="stat-card"><h4>Avg. Price Rating</h4><p id="analytics-avg-price-rating">Loading...</p></div>
+                        <div class="stat-card"><h4>Avg. Delivery Time (min)</h4><p id="analytics-avg-delivery-time">Loading...</p></div>
+                    </div>
+                    <div id="no-analytics-data" style="display: none; text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 5px;">
+                        <p>No review data available yet to generate analytics.</p>
+                    </div>
+                    <div class="charts-container" id="analytics-charts-container" style="display: none; margin-top: 30px;">
+                        <div class="chart-wrapper">
+                            <h3>Average Sub-Ratings</h3>
+                            <canvas id="averageRatingsChart"></canvas>
+                            <p id="averageRatingsChartMessage" class="chart-message" style="display:none;"></p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <h3>Overall Rating Distribution</h3>
+                            <canvas id="overallRatingDistributionChart"></canvas>
+                            <p id="overallRatingDistributionChartMessage" class="chart-message" style="display:none;"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADD THIS ENTIRE NEW SECTION -->
+                <div id="sales-reports" class="content-section" style="display: none;">
+                    <h2>Sales Reports</h2>
+                    <p>Generate reports to see your sales performance and top-selling items.</p>
+                    <a id="link-to-sales-reports" href="#" class="btn btn-primary" rel="noopener noreferrer">Open Sales Report Tool</a>
+                    <p class="note">Click the button to open the Sales Report page in a new tab.</p>
+                </div>
+                <!-- END NEW SECTION -->
+
+                <div id="settings" class="content-section" style="display: none;">
+                    <h2>Settings</h2><div class="setting-item"><h4>Account Email</h4><p id="settings-user-email">Loading...</p></div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="site-footer text-center">
+        <p>© <span id="current-year">2024</span> Yelp Somalia - Business Portal.</p>
+    </footer>
+
+   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+   <!-- <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-storage-compat.js"></script> -->
+
+    <script type="module" src="/firebase-config/indexfirebaseConfig.js"></script>
+    <script type="module" src="/js/auth.js"></script>
+    <script type="module" src="/js/dashboard.js"></script>
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archived Orders | Yelp Somalia</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/Assets/Logo.png">
+    <link rel="stylesheet" href="/Styles/index.css"> <!-- Your base styles -->
+    <link rel="stylesheet" href="/Styles/archived-orders.css"> <!-- Specific styles for this page -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- Your standard header HTML from business-detail.html -->
+        <div class="navbar">
+            <a href="/index.html" class="logo"><i class="fas fa-arrow-left"></i></a>
+            <!-- <a href="#" class="logo">Yelp <span>Somalia</span> | Business</a> -->
+        </div>
+    </header>
+
+    <main class="archived-orders-container">
+        <div id="loading-archived-orders" class="loading-message">
+            <div class="loading-spinner"></div>
+            <p>Loading archived orders...</p>
+        </div>
+        <div id="archived-orders-error" class="error-message" style="display: none;"></div>
+        <div id="archived-orders-auth-prompt" class="auth-prompt" style="display: none;">
+            <p>You must be logged in as the business owner to view archived orders.</p>
+            <p>Please <button type="button" class="link-button" id="archived-orders-login-prompt-button">log in</button>.</p>
+        </div>
+
+        <div id="archived-orders-content" style="display: none;">
+            <h1 id="archived-orders-business-name">Archived Orders for [Business Name]</h1>
+            <!-- archived-orders.html -->
+<!-- ... inside #archived-orders-content -> .orders-controls ... -->
+<div class="orders-controls">
+    <label for="sort-archived-orders">Sort by:</label>
+    <select id="sort-archived-orders">
+        <option value="newest_finalized">Newest Finalized</option>
+        <option value="oldest_finalized">Oldest Finalized</option>
+        <option value="status_completed_first">Completed First (then by newest finalized)</option> <!-- NEW -->
+        <option value="status_cancelled_first">Cancelled First (then by newest finalized)</option> <!-- NEW -->
+        <option value="original_newest">Originally Newest (by order time)</option>
+        <option value="original_oldest">Originally Oldest (by order time)</option>
+    </select>
+</div>
+
+            <!-- TABS for Order Types -->
+            <div class="order-type-tabs">
+                <button class="tab-button active" data-order-type="eatingIn">Eating In (<span id="eatingIn-archive-count" class="order-count-badge">0</span>)</button>
+                <button class="tab-button" data-order-type="takeaway">Takeaway (<span id="takeaway-archive-count" class="order-count-badge">0</span>)</button>
+                <button class="tab-button" data-order-type="delivery">Delivery (<span id="delivery-archive-count" class="order-count-badge">0</span>)</button>
+                <button class="tab-button" data-order-type="other">Other (<span id="other-archive-count" class="order-count-badge">0</span>)</button>
+            </div>
+
+            <!-- PANELS for Orders of Each Type -->
+            <div id="eatingIn-archived-orders-panel" class="order-type-panel active-panel">
+                <p class="no-orders-message" style="display:none;">No archived 'Eating In' orders.</p>
+            </div>
+            <div id="takeaway-archived-orders-panel" class="order-type-panel">
+                <p class="no-orders-message" style="display:none;">No archived 'Takeaway' orders.</p>
+            </div>
+            <div id="delivery-archived-orders-panel" class="order-type-panel">
+                <p class="no-orders-message" style="display:none;">No archived 'Delivery' orders.</p>
+            </div>
+            <div id="other-archived-orders-panel" class="order-type-panel">
+                <p class="no-orders-message" style="display:none;">No archived 'Other' type orders.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer><!-- Your standard footer --></footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script type="module" src="/firebase-config/indexfirebaseConfig.js"></script>
+    <script type="module" src="/js/auth.js"></script>
+    <script src="/js/menu.js"></script> <!-- For hamburger menu -->
+    <script type="module" src="/js/archived-orders.js"></script>
+</body>
+</html>
